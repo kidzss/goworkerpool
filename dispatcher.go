@@ -31,6 +31,9 @@ func (d *Dispatcher) dispatch() {
 		select {
 		case job := <-JobQueue:
 			go func(job Job) {
+				//从全局的workerpool中拿到一条jobChannel
+				//然后把当前的job塞到这条jobChannel
+				//然后这条jobChannel对应的worker就可以拿到job去处理了
 				jobChannel := <-d.WorkerPool
 				jobChannel <- job
 			}(job)

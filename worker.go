@@ -20,6 +20,7 @@ type Worker struct {
 
 func NewWorker(workerPool chan chan Job, workerID int) Worker {
 	return Worker{
+		//全局的workerpool的一个引用
 		WorkerPool: workerPool,
 		JobChannel: make(chan Job),
 		WorkerID:   workerID,
@@ -31,6 +32,7 @@ func (w Worker) Start() {
 	go func() {
 		for {
 			println("worker working start")
+			//把自己的工作通道塞到全局的workerpool里
 			w.WorkerPool <- w.JobChannel
 			select {
 			case job := <-w.JobChannel:
